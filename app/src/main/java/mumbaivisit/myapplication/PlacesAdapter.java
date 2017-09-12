@@ -1,5 +1,6 @@
 package mumbaivisit.myapplication;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,11 @@ import java.util.List;
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHolder> {
     private static final String LOG_TAG = PlacesAdapter.class.getSimpleName();
     private List<String> placesList;
+    private FragmentPlacesList fragmentPlacesList;
 
-    public PlacesAdapter(List<String> placesList) {
+    public PlacesAdapter(FragmentPlacesList fragmentPlacesList,List<String> placesList) {
         this.placesList = placesList;
+        this.fragmentPlacesList = fragmentPlacesList;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -34,9 +37,16 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        String placeNameText = placesList.get(position);
+        final String placeNameText = placesList.get(position);
         holder.placeName.invalidate();
         holder.placeName.setText(placeNameText);
+        holder.placeName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentPlacesList.openWebPage(placeNameText);
+             //context
+            }
+        });
 
     }
 
