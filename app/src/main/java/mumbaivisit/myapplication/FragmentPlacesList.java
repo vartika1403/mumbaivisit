@@ -50,12 +50,12 @@ public class FragmentPlacesList extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.web_view_place)
-    public void openWebPage(String placeName) {
+   // @OnClick(R.id.web_view_place)
+   /* public void openWebPage(String placeName) {
          webView.setVisibility(View.VISIBLE);
          webView.loadUrl(URL + placeName);
     }
-
+*/
     private void addItemsToArrayList() {
         placesArrayList = new ArrayList<String>();
         placesArrayList.add("Gateway_of_India");

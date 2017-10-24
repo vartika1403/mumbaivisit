@@ -43,7 +43,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.MyViewHold
         holder.placeName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentPlacesList.openWebPage(placeNameText);
+              //  fragmentPlacesList.openWebPage(placeNameText);
              //context
             }
         });

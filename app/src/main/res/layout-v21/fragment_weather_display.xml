@@ -77,16 +77,9 @@
 
     <View
         android:id="@+id/view"
-        android:layout_marginTop="20dp"
         android:layout_below="@id/city_humidity"
         android:background="@color/colorOrange"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/forecast_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></LinearLayout>
 
 </RelativeLayout>
