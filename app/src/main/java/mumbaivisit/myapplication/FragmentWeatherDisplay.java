@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import org.json.JSONException;
@@ -75,10 +76,14 @@ public class FragmentWeatherDisplay extends Fragment {
 
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                Log.i(LOG_TAG, "response, " + response.body().getAsJsonObject().get("main"));
-                JsonElement jsonElement = response.body().getAsJsonObject().get("main");
+                Log.i(LOG_TAG, "response, " + response.body().getAsJsonObject().get("list"));
+                JsonElement jsonElement = response.body().getAsJsonObject().get("list");
+                JsonArray Jarray = (JsonArray) jsonElement.getAsJsonObject().get("main");
+             // JsonElement jsonObject = jsonElement.getAsJsonArray().get("main");
+               Log.i(LOG_TAG, "jsonObject, " + Jarray);
                 Gson gson = new Gson();
                 final WeatherResponse weatherResponse = gson.fromJson(jsonElement, WeatherResponse.class);
+              //  Log.i(LOG_TAG, )
                 Log.i(LOG_TAG, "temp, " + weatherResponse.getTemp());
                 if (getActivity() != null) {
                     (getActivity()).runOnUiThread(new Runnable() {
@@ -105,8 +110,6 @@ public class FragmentWeatherDisplay extends Fragment {
     private void updateViewWithData(WeatherResponse weatherObject) throws JSONException {
         String cityNameText = "Mumbai";
         cityName.setText(cityNameText);
-       // JSONObject mainObject = (JSONObject) jsonObject.get("main");
-       // Log.i(LOG_TAG, "mainObject, " + mainObject);
         double tempValue = weatherObject.getTemp();
         double pressureValue = weatherObject.getPressure();
         double humidityValue = weatherObject.getHumidity();
