@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,9 +79,18 @@ public class FragmentWeatherDisplay extends Fragment {
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 Log.i(LOG_TAG, "response, " + response.body().getAsJsonObject().get("list"));
                 JsonElement jsonElement = response.body().getAsJsonObject().get("list");
-                JsonArray Jarray = (JsonArray) jsonElement.getAsJsonObject().get("main");
+                Log.i(LOG_TAG, "jsonArray list, " + jsonElement);
+                JsonArray values = jsonElement.getAsJsonArray();
+                Log.i(LOG_TAG, "values, " + values);
+                Log.i(LOG_TAG, "values size, " + values.size());
              // JsonElement jsonObject = jsonElement.getAsJsonArray().get("main");
-               Log.i(LOG_TAG, "jsonObject, " + Jarray);
+                for (int i = 0; i < values.size(); i++) {
+                    JsonElement jsonObject = values.get(i);
+                    Log.i(LOG_TAG, "jsonObject, " + jsonObject);
+                    JsonElement main = jsonObject.getAsJsonObject().get("main");
+                    Log.i(LOG_TAG, "main, " + main);
+
+                }
                 Gson gson = new Gson();
                 final WeatherResponse weatherResponse = gson.fromJson(jsonElement, WeatherResponse.class);
               //  Log.i(LOG_TAG, )
