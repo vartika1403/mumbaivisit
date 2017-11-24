@@ -2,6 +2,7 @@ package mumbaivisit.myapplication;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +47,10 @@ public class FragmentWeatherDisplay extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_weather_display, container, false);
+        if (getActivity() != null &&
+                ((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        }
         ButterKnife.bind(this, view);
         try {
             getWeatherData();
@@ -70,10 +77,23 @@ public class FragmentWeatherDisplay extends Fragment {
 
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                Log.i(LOG_TAG, "response, " + response.body().getAsJsonObject().get("main"));
-                JsonElement jsonElement = response.body().getAsJsonObject().get("main");
+                Log.i(LOG_TAG, "response, " + response.body().getAsJsonObject().get("list"));
+                JsonElement jsonElement = response.body().getAsJsonObject().get("list");
+                Log.i(LOG_TAG, "jsonArray list, " + jsonElement);
+                JsonArray values = jsonElement.getAsJsonArray();
+                Log.i(LOG_TAG, "values, " + values);
+                Log.i(LOG_TAG, "values size, " + values.size());
+             // JsonElement jsonObject = jsonElement.getAsJsonArray().get("main");
+                for (int i = 0; i < values.size(); i++) {
+                    JsonElement jsonObject = values.get(i);
+                    Log.i(LOG_TAG, "jsonObject, " + jsonObject);
+                    JsonElement main = jsonObject.getAsJsonObject().get("main");
+                    Log.i(LOG_TAG, "main, " + main);
+
+                }
                 Gson gson = new Gson();
                 final WeatherResponse weatherResponse = gson.fromJson(jsonElement, WeatherResponse.class);
+              //  Log.i(LOG_TAG, )
                 Log.i(LOG_TAG, "temp, " + weatherResponse.getTemp());
                 if (getActivity() != null) {
                     (getActivity()).runOnUiThread(new Runnable() {
@@ -100,8 +120,6 @@ public class FragmentWeatherDisplay extends Fragment {
     private void updateViewWithData(WeatherResponse weatherObject) throws JSONException {
         String cityNameText = "Mumbai";
         cityName.setText(cityNameText);
-       // JSONObject mainObject = (JSONObject) jsonObject.get("main");
-       // Log.i(LOG_TAG, "mainObject, " + mainObject);
         double tempValue = weatherObject.getTemp();
         double pressureValue = weatherObject.getPressure();
         double humidityValue = weatherObject.getHumidity();
